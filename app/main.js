@@ -32,5 +32,7 @@ exports.getFileFromUser = () => {
 
 const openFile = (file) => {
     const content = fs.readFileSync(file).toString();
+    //this will show recent documents in the mac dock when we right click on the app icon
+    app.addRecentDocument(file);
     mainWindow.webContents.send('file-opened', file, content); // from main process we are sending the message to the render process
 };
