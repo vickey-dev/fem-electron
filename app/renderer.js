@@ -35,7 +35,7 @@ const updateUserInterface = (isEdited) => {
   /* this line is specifically for the macOS where file icon will be present
       next to the file name in the title bar & a little dot icon on the close button
   */
-  currentWindow.setRepresentedFilename(filePath);
+  if (filePath) currentWindow.setRepresentedFilename(filePath);
   currentWindow.setDocumentEdited(isEdited);
 
   saveMarkdownButton.disabled = !isEdited;
@@ -63,6 +63,7 @@ ipcRenderer.on('file-opened', (event, file, content) => {
   originalContent = content;
   markdownView.value = content;
   renderMarkdownToHtml(content);
-
-  updateUserInterface();
+  /* need to pass false otherwise while opening the newly created file will throw an error in the
+    setDocumentEdited*/
+  updateUserInterface(false);
 });

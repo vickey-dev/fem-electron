@@ -43,8 +43,10 @@ exports.saveMarkdown = (file, content) => {
     }
 
     if (!file) return;
-    
+
     fs.writeFileSync(file, content);
+    //this will remove the edited text from the title bar if you save a file which is created from this markdown editor current electron app :)
+    openFile(file);
 };
 
 const openFile = (file) => {
