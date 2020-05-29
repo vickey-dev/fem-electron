@@ -30,6 +30,23 @@ exports.getFileFromUser = () => {
     openFile(file);
 };
 
+exports.saveMarkdown = (file, content) => {
+    if (!file) {
+        file = dialog.showSaveDialog({
+            title: 'Save Markdown',
+            //here app.getPath will get path for the specified string which will be taken care by electron for different OS
+            defaultPath: app.getPath('desktop'),
+            filters: [{
+                name: 'Markdown Files', extensions: ['md', 'mdown', 'markdown']
+            }]
+        });
+    }
+
+    if (!file) return;
+    
+    fs.writeFileSync(file, content);
+};
+
 const openFile = (file) => {
     const content = fs.readFileSync(file).toString();
     //this will show recent documents in the mac dock when we right click on the app icon
