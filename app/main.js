@@ -13,7 +13,8 @@ app.on('ready', () => {
 
 exports.getFileFromUser = () => {
     //return undefined if user clicks on the cancel or array if user choose a file
-    const files = dialog.showOpenDialog({
+    const files = dialog.showOpenDialog(mainWindow, {
+        /* mainWindow is added here to give a dropdown sheet effect in macOS during dialog open */
         properties: ['openFile'],
         filters: [
             {
@@ -32,7 +33,7 @@ exports.getFileFromUser = () => {
 
 exports.saveMarkdown = (file, content) => {
     if (!file) {
-        file = dialog.showSaveDialog({
+        file = dialog.showSaveDialog(mainWindow, {
             title: 'Save Markdown',
             //here app.getPath will get path for the specified string which will be taken care by electron for different OS
             defaultPath: app.getPath('desktop'),
@@ -47,6 +48,20 @@ exports.saveMarkdown = (file, content) => {
     fs.writeFileSync(file, content);
     //this will remove the edited text from the title bar if you save a file which is created from this markdown editor current electron app :)
     openFile(file);
+};
+
+exports.saveHtml = content => {
+    const file = dialog.showSaveDialog(mainWindow, {
+        title: 'Save Html',
+        defaultPath: app.getPath('desktop'),
+        filters: [{
+            name: 'HTML files', extensions: ['html']
+        }]
+    });
+
+    if (!file) return;
+
+    fs.writeFileSync(file, content);
 };
 
 const openFile = (file) => {
